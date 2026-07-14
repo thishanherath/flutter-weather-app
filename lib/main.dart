@@ -19,14 +19,30 @@ class _MainAppState extends State<MainApp> {
 
   initState() {
     super.initState();
-    widget.openWeatherApi.getWeatherDetails(lat: 35.6895, lon: 139.6917);
+    var res =widget.openWeatherApi.getWeatherDetails(lat: 6.9271, lon: 79.8612);
+    res.then((value) => print("Initial weather data: $value"));
+
   }
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: Text('Hello World!'),
+          child: FutureBuilder(
+            future: widget.openWeatherApi.getWeatherDetails(lat: 6.9271, lon: 79.8612),
+            builder: (context, snapshot) {
+                if(snapshot.connectionState == ConnectionState.waiting)
+                  return const CircularProgressIndicator();
+                else if(snapshot.hasError)
+                  return Text('Error: ${snapshot.error}');
+                
+                var data = snapshot.data;
+
+                return Text(data! ["weather"][0]["main"].toString());
+
+              
+            },
+          ),
         ),
       ),
     );
