@@ -14,11 +14,15 @@ class OpenWeatherAPI {
     print('Getting weather details');
 
     var url =
-        "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey&units=metric";
+        "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&units=metric&appid=$apiKey&units=metric";
 
     var res = await http.get(Uri.parse(url));
     print(res.body);
 
     return jsonDecode(res.body);
+  }
+
+  String getWeatherIcon(String icon) {
+    return "https://openweathermap.org/img/wn/$icon@4x.png";
   }
 }
